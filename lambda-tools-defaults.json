@@ -1,0 +1,15 @@
+{
+  "profile": "default",
+  "region": "us-east-1",
+  "configuration": "Release",
+  "framework": "net8.0",
+  "function-runtime": "dotnet8.0",
+  "function-memory-size": 512,
+  "function-timeout": 30,
+  "function-name": "CarsServiceLambda",
+  "package-type": "Zip",
+  "function-role": "arn:aws:iam::615645510092:role/lambda-basic-role",
+  "function-handler": "BackEndUpch::BackEndUpch.LambdaEntryPoint::FunctionHandlerAsync",
+  "msbuild-parameters": "--self-contained false",
+  "s3-bucket": "deploy-carsservice-lambda"
+}

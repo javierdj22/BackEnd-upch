@@ -1,0 +1,4 @@
+{
+  "FunctionName": "CarsServiceLambda",
+  "Runtime": "dotnet6"
+}
