@@ -65,6 +65,10 @@ coverage/
 .env.*
 !.env.example
 
+# Archivos ZIP generados (build, deploy, paquetes)
+*.zip
+
+
 ########################################
 # FRAMEWORKS Y TOOLS
 ########################################

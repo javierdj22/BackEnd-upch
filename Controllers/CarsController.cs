@@ -15,30 +15,20 @@ namespace BackEndUpch.Controllers
             _carService = carService;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAll([FromQuery] string? brand, [FromQuery] string? type, [FromQuery] int? year)
-        //{
-        //    var cars = await _carService.GetAllAsync();
-
-        //    if (!string.IsNullOrEmpty(brand))
-        //        cars = cars.Where(c => c.Brand.Equals(brand, StringComparison.OrdinalIgnoreCase)).ToList();
-
-        //    if (!string.IsNullOrEmpty(type))
-        //        cars = cars.Where(c => c.Type.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
-
-        //    if (year.HasValue)
-        //        cars = cars.Where(c => c.Year == year.Value).ToList();
-
-        //    return Ok(cars);
-        //}
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? brand, [FromQuery] string? type, [FromQuery] int? year)
         {
-            var cars = new[]
-            {
-                new { Id = 1, Brand = "Toyota", Model = "Corolla" },
-                new { Id = 2, Brand = "Ford", Model = "Focus" }
-            };
+            var cars = await _carService.GetAllAsync();
+
+            if (!string.IsNullOrEmpty(brand))
+                cars = cars.Where(c => c.Brand.Equals(brand, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            if (!string.IsNullOrEmpty(type))
+                cars = cars.Where(c => c.Type.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            if (year.HasValue)
+                cars = cars.Where(c => c.Year == year.Value).ToList();
+
             return Ok(cars);
         }
 

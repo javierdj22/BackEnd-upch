@@ -8,18 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Back.Api.Serverless\**" />
-    <Compile Remove="Back.Serverless.Command\**" />
-    <Compile Remove="Back.Serverless.Query\**" />
-    <Content Remove="Back.Api.Serverless\**" />
-    <Content Remove="Back.Serverless.Command\**" />
-    <Content Remove="Back.Serverless.Query\**" />
-    <EmbeddedResource Remove="Back.Api.Serverless\**" />
-    <EmbeddedResource Remove="Back.Serverless.Command\**" />
-    <EmbeddedResource Remove="Back.Serverless.Query\**" />
-    <None Remove="Back.Api.Serverless\**" />
-    <None Remove="Back.Serverless.Command\**" />
-    <None Remove="Back.Serverless.Query\**" />
+    <Content Include="README.md" />
   </ItemGroup>
 
   <ItemGroup>
