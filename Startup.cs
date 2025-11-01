@@ -32,11 +32,18 @@ namespace BackEndUpch
                                .AllowAnyMethod();
                     });
             });
-            // DB: asegúrate que DefaultConnection esté en appsettings.json o variables de entorno de Lambda
+            var connectionString = "Server=carsdb.cwluqou4e2qx.us-east-1.rds.amazonaws.com;Database=CarsDb;User Id=admin;Password=NuevaClaveSegura1!;TrustServerCertificate=True;Encrypt=True;";
+
             services.AddDbContext<CarsDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseSqlServer(connectionString)
                        .EnableSensitiveDataLogging()
                        .EnableDetailedErrors());
+
+            // DB: asegúrate que DefaultConnection esté en appsettings.json o variables de entorno de Lambda
+            //services.AddDbContext<CarsDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            //           .EnableSensitiveDataLogging()
+            //           .EnableDetailedErrors());
 
             // Inyecciones
             services.AddScoped<ICarRepository, CarRepository>();
