@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using BackEndUpch.Models;
+using BackEndUpch.Domain;
 using BackEndUpch.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BackEndUpch.Controllers
 {
@@ -16,49 +16,47 @@ namespace BackEndUpch.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? brand, [FromQuery] string? type, [FromQuery] int? year)
+        public async Task<IActionResult> GetAll()
         {
             var cars = await _carService.GetAllAsync();
-
-            if (!string.IsNullOrEmpty(brand))
-                cars = cars.Where(c => c.Brand.Equals(brand, StringComparison.OrdinalIgnoreCase)).ToList();
-
-            if (!string.IsNullOrEmpty(type))
-                cars = cars.Where(c => c.Type.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
-
-            if (year.HasValue)
-                cars = cars.Where(c => c.Year == year.Value).ToList();
-
-            return Ok(cars);
+            return Ok(new { success = true, data = cars });
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var car = await _carService.GetByIdAsync(id);
-            return car == null ? NotFound() : Ok(car);
+            if (car == null)
+                return NotFound(new { success = false, message = $"No se encontró el auto con ID {id}." });
+
+            return Ok(new { success = true, data = car });
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateCarDto car)
         {
             var newCar = await _carService.CreateAsync(car);
-            return CreatedAtAction(nameof(GetById), new { id = newCar.Id }, newCar);
+            return CreatedAtAction(nameof(GetById), new { id = newCar.Id }, new { success = true, data = newCar });
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Car car)
         {
-            if (id != car.Id) return BadRequest();
+            if (id != car.Id)
+                return BadRequest(new { success = false, message = "El ID de la ruta no coincide con el del cuerpo." });
+
             var updatedCar = await _carService.UpdateAsync(car);
-            return Ok(updatedCar);
+            return Ok(new { success = true, data = updatedCar });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _carService.DeleteAsync(id);
-            return deleted ? NoContent() : NotFound();
+            if (!deleted)
+                return NotFound(new { success = false, message = $"No se encontró el auto con ID {id} para eliminar." });
+
+            return Ok(new { success = true, message = "Auto eliminado correctamente." });
         }
     }
 }

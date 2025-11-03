@@ -1,5 +1,5 @@
-using BackEndUpch.Models;
-using BackEndUpch.Repositories.Interfaces;
+﻿using BackEndUpch.Domain;
+using BackEndUpch.Domain.Interfaces;
 using BackEndUpch.Services.Interfaces;
 
 namespace BackEndUpch.Services
@@ -15,8 +15,8 @@ namespace BackEndUpch.Services
 
         public async Task<IEnumerable<Car>> GetAllAsync() => await _repository.GetAllAsync();
         public async Task<Car?> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
-        public async Task<Car> CreateAsync(CreateCarDto car) => await _repository.AddAsync(car);
-        public async Task<Car> UpdateAsync(Car car) => await _repository.UpdateAsync(car);
+        public async Task<Car> CreateAsync(CreateCarDto Car) => await _repository.AddAsync(Car);
+        public async Task<Car> UpdateAsync(Car Car) => await _repository.UpdateAsync(Car);
         public async Task<bool> DeleteAsync(int id) => await _repository.DeleteAsync(id);
     }
 }

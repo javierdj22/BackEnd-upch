@@ -1,11 +1,8 @@
-using BackEndUpch.Data;
-using BackEndUpch.Repositories;
-using BackEndUpch.Repositories.Interfaces;
+﻿using BackEndUpch.Data;
+using BackEndUpch.Domain.Interfaces;
+using BackEndUpch.Infrastructure;
 using BackEndUpch.Services;
 using BackEndUpch.Services.Interfaces;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackEndUpch
@@ -19,19 +16,21 @@ namespace BackEndUpch
             Configuration = configuration;
         }
 
+        // 🔹 CONFIGURACIÓN DE SERVICIOS
         public void ConfigureServices(IServiceCollection services)
-        { 
-            // CORS
+        {
+            // 🔸 CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowReactApp",
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:5173") // URL de tu frontend
-                               .AllowAnyHeader()
-                               .AllowAnyMethod();
-                    });
+                options.AddPolicy("AllowReactApp", builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
             });
+
+            // 🔸 Conexión a la base de datos
             var connectionString = "Server=carsdb.cwluqou4e2qx.us-east-1.rds.amazonaws.com;Database=CarsDb;User Id=admin;Password=NuevaClaveSegura1!;TrustServerCertificate=True;Encrypt=True;";
 
             services.AddDbContext<CarsDbContext>(options =>
@@ -39,36 +38,37 @@ namespace BackEndUpch
                        .EnableSensitiveDataLogging()
                        .EnableDetailedErrors());
 
-            // DB: aseg�rate que DefaultConnection est� en appsettings.json o variables de entorno de Lambda
-            //services.AddDbContext<CarsDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-            //           .EnableSensitiveDataLogging()
-            //           .EnableDetailedErrors());
-
-            // Inyecciones
+            // 🔸 Repositorios y servicios
             services.AddScoped<ICarRepository, CarRepository>();
             services.AddScoped<ICarService, CarService>();
 
-            // Controllers
-            services.AddControllers();
+            // 🔸 Controllers y JSON
+            services.AddControllers()
+                    .AddNewtonsoftJson();
 
-            // Swagger solo si realmente quieres exponerlo (opcional en Lambda)
+            // 🔸 Swagger
             services.AddSwaggerGen();
         }
 
-        public void Configure(IApplicationBuilder app)
+        // 🔹 CONFIGURACIÓN DEL PIPELINE
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
-            app.UseCors("AllowReactApp");
-            // NO dependas de IWebHostEnvironment, puede ser null en Lambda
-            // Usa un try/catch o simplemente ignora Swagger
-            if (app.ApplicationServices.GetService<IWebHostEnvironment>()?.IsDevelopment() == true)
+            if (env.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BackEndUpch API v1");
+                });
             }
 
             app.UseRouting();
 
+            // 🔸 CORS
+            app.UseCors("AllowReactApp");
+
+            // 🔸 Endpoints
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

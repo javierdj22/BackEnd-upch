@@ -1,7 +1,4 @@
-using BackEndUpch.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
+﻿using BackEndUpch.Domain;
 namespace BackEndUpch.Services.Interfaces
 {
     public interface ICarService

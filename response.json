@@ -1,9 +1,0 @@
-{
-  "errorType": "LambdaValidationException",
-  "errorMessage": "Unable to load type 'BackEndUpch.LambdaEntryPoint' from assembly 'BackEndUpch'.",
-  "stackTrace": [
-    "at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeLoader.Init(Action`1 customerLoggingAction) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeLoader.cs:line 115",
-    "at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeInitializer.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeInitializer.cs:line 46",
-    "at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 210"
-  ]
-}
